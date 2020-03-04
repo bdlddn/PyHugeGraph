@@ -30,31 +30,31 @@ PropertyKey 用来规范顶点和边的属性的约束，暂不支持定义属�
 PropertyKey 允许定义的约束信息包括：name、datatype、cardinality、userdata。
 具体参数信息请参考https://hugegraph.github.io/hugegraph-doc/clients/hugegraph-client.html中相关内容。这里只简单介绍接口的使用方法
 
-##### 2.2.1 创建PropertyKey
+###### 2.2.1 创建PropertyKey
 ```
 schema.propertyKey("name").asText().valueSet().ifNotExist().create()
 schema.propertyKey("age").asText().valueSet().ifNotExist().create()
 ```
 ifNotExist()：为 create 添加判断机制，若当前 PropertyKey 已经存在则不再创建，否则创建该属性。若不添加判断，在 properkey 已存在的情况下会抛出异常信息，下同，不再赘述。
 
-##### 2.2.2 追加PropertyKey
+###### 2.2.2 追加PropertyKey
 ```
 schema.porpertyKey("age").user_data({"min":12, "max": 18}).append()
 ```
 给PropertyKey追加user_data。
 
-##### 2.2.3 清除PropertyKey
+###### 2.2.3 清除PropertyKey
 ```
 schema.porpertyKey("age").user_data({"min": 12}).eliminate()
 ```
 清除PorpertyKey的user_data中相关项，目前仅支持清除user_data。
 
-##### 2.2.4 删除PropertyKey
+###### 2.2.4 删除PropertyKey
 ```
 schema.propertyKey("age").remove()
 ```
 
-##### 2.2.5 查询PropertyKey
+###### 2.2.5 查询PropertyKey
 ```
 # 获取PropertyKey对象
 schema.getPropertyKey("name")
