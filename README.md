@@ -177,9 +177,111 @@ schema.getEdgeLabel("knows").userdata
 schema.getEdgeLabels()
 ```
 
-## 2.5 IndexLabel
+### 2.5 IndexLabel
 IndexLabel 用来定义索引类型，描述索引的约束信息，主要是为了方便查询。
 
 IndexLabel 允许定义的约束信息包括：name、baseType、baseValue、indexFeilds、indexType。
 
-### 
+#### 2.5.1 创建IndexLabel
+```
+schema.indexLabel("personByAge").onV("person").by("age").range().ifNotExist().create()
+schema.indexLabel("createdByDate").onE("created").by("date").secondary().ifNotExist().create()
+schema.indexLabel("personByLived").onE("person").by("lived").search().ifNotExist().create()
+```
+
+#### 2.5.2 删除IndexLabel
+```
+schema.indexLabel("personByAge").remove()
+```
+
+#### 2.5.3 查询IndexLabel
+```
+# 获取IndexLabel对象
+schema.getIndexLabel("personByAge")
+
+# 获取property key属性
+schema.getIndexLabel("personByAge").baseType
+schema.getIndexLabel("personByAge").baseValue
+schema.getIndexLabel("personByAge").indexFields
+schema.getIndexLabel("personByAge").indexType
+schema.getIndexLabel("personByAge").name
+
+# 查询图中所有IndexLabel
+schema.getIndexLabels()
+```
+
+## 3 图数据
+顶点是构成图的最基本元素，一个图中可以有非常多的顶点。在使用图数据模块之前，在定义元数据信息之前必须先创建 GraphManager 对象。
+```
+from PyHugeGraph/my_requests import MySession
+
+graph = client.graph()
+# 新建requests session用于通信
+graph.set_session(MySession.new_session())
+```
+
+### 3.1 Vertex
+#### 3.1.1 创建Vertex
+```
+# 创建一个Vertex
+graph.addVertex("person", {"name": "lilei", "age": 18})
+# 创建多个Vertex
+graph.addVertex([["person", {"name": "lilei", "age": 18}],["person", {"name": "hanmei", "age": 19}]])
+```
+
+#### 3.1.2 追加Vertex
+```
+# 输入参数：vertex_id，proerites
+graph.appendVertex('1:lilei', {"age": 19})
+```
+
+#### 3.1.3 清除Vertex
+支持清除Vertx属性值，不支持清除PrimaryKey的属性值
+```
+# 输入参数：vertex_id，proerites
+graph.eliminateVertex('1:lilei', {"age": 19})
+```
+
+#### 3.1.4 删除Vertex
+```
+graph.removeVertex('1:lilei')
+```
+
+#### 3.1.5 查询vertex
+```
+# 通过id查询vertex
+graph.getVertexById("1:lilei")
+# 通过条件查询，分页显示
+graph.getVertexByPage("person", limit=1, page='', {"age": 18})
+```
+
+### 3.2 Edge
+#### 3.2.1 创建Edge
+```
+# 添加一条边
+graph.addEdge('knows', '1:lilei', '1:hanmei', {'time': '2019-01-01 00:00:00'})
+# 添加多条边
+edges = [
+  ['knows', '1:lilei', '1:hanmei', 'person', 'person', {'time': '2019-01-01 00:00:00'}],
+  ['knows', '1:lilei', '1:xiaoming', 'person', 'person', {'time': '2019-01-02 00:00:00'}]
+]
+graph.addEdges(edges)
+```
+
+#### 3.2.2 更新Edge
+```
+graph.appendEdge('S1:lilei>>S1:hanmei', {'time', '2018-01-01 00:00:00'})
+```
+
+#### 3.2.3 清除Edge
+```
+graph.eliminateEdge('S1:lilei>>S1:hanmei', {'time', '2018-01-01 00:00:00'})
+```
+
+#### 3.2.4 查询Edge
+```
+# 按id查询
+graph.getEdgeById('S1:lilei>>S1:hanmei')
+# 按条件查询，分页
+graph.getEdgeByPage(label='kowns', vertex_id='1:lilei', direction='BOTH', limit=1, page='')
+```
