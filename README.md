@@ -28,7 +28,8 @@ schema = client.schema()
 PropertyKey 用来规范顶点和边的属性的约束，暂不支持定义属性的属性。
 
 PropertyKey 允许定义的约束信息包括：name、datatype、cardinality、userdata。
-具体参数信息请参考https://hugegraph.github.io/hugegraph-doc/clients/hugegraph-client.html中相关内容。这里只简单介绍接口的使用方法
+具体参数信息请参考https://hugegraph.github.io/hugegraph-doc/clients/hugegraph-client.html
+中相关内容。这里只简单介绍接口的使用方法
 
 #### 2.2.1 创建PropertyKey
 ```
