@@ -17,6 +17,6 @@ client = HugeClient("http://localhost:8080", "hugegraph");
 SchemaManager 用于管理 HugeGraph 中的四种元数据，分别是PropertyKey（属性类型）、VertexLabel（顶点类型）、EdgeLabel（边类型）和 IndexLabel（索引标签）。在定义元数据信息之前必须先创建 SchemaManager 对象。
 
 用户可使用如下方法获得SchemaManager对象：
-`
+```
 schema = client.schema()
-`
+```
